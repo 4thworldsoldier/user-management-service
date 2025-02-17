@@ -25,16 +25,18 @@ public class AuthController {
     private JwtUtil jwtUtil;
     @Autowired
     private UserDetailsService userDetailsService;
-    private static final Logger LOG = LoggerFactory.getLogger(AuthController.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class.getName());
 
     @PostMapping("/login")
     public ResponseEntity<BaseResponse> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws BadCredentialsException {
+        logger.info("Login Request Received for: " + authenticationRequest.getUsername() + " and password " + authenticationRequest.getPassword() );
 
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
-        } catch (BadCredentialsException badCredentialsException) {
-            LOG.error("Incorrect username or password");
-            throw badCredentialsException;
+        } catch (BadCredentialsException e) {
+            logger.error("Login failed Error occurred during login :" + e.getMessage(), e);
+            throw e;
+
         }
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
@@ -42,11 +44,13 @@ public class AuthController {
 
         BaseResponse resp = new BaseResponse<>(ResponseConstants.SUCCESS_CODE,ResponseConstants.SUCCESS_MESSAGE,new AuthenticationResponse(jwt));
 
+        logger.info("Login Request Succeeded for: " + authenticationRequest.getUsername() );
         return ResponseEntity.ok(resp);
     }
 
     @GetMapping("/post-login")
     public ResponseEntity<BaseResponse> postLogin(@RequestParam("token") String token) {
+        logger.info("0auth2 Login successfully Received with token :" + token);
         BaseResponse resp = new BaseResponse<>(ResponseConstants.SUCCESS_CODE,ResponseConstants.SUCCESS_MESSAGE,token);
         return ResponseEntity.ok(resp);
     }
