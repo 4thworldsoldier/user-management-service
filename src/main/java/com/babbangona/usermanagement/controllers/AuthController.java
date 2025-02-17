@@ -3,7 +3,7 @@ package com.babbangona.usermanagement.controllers;
 import com.babbangona.commons.library.dto.request.AuthenticationRequest;
 import com.babbangona.commons.library.dto.response.AuthenticationResponse;
 import com.babbangona.commons.library.dto.response.BaseResponse;
-import com.babbangona.commons.library.security.spring.JwtUtil;
+import com.babbangona.commons.library.security.JwtUtil;
 import com.babbangona.commons.library.utils.ResponseConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
