@@ -1,0 +1,47 @@
+# Default ignored files
+/shelf/
+/.idea/workspace.xml
+
+
+# Windows
+Thumbs.db
+.DS_Store
+*.class
+*.log
+*.pyc
+*.pyo
+*.pyd
+*.swp
+*~
+*.tmp
+*.bak
+*.orig
+*.old
+
+# Mac
+.DS_Store
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+out/
+
+
+# Maven
+target/
+!src/main/resources/
+!src/test/resources/
+*.mvn/
+
+# Spring Boot
+*.jar
+*.war
+
+# Logs
+logs/
+*.log
+
+# Environment-specific files
+.env
+*.env
