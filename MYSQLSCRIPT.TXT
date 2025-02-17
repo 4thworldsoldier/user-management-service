@@ -1,0 +1,62 @@
+INSERT INTO `usermanager`.`tenant` (`is_active`,`id`, `name`) VALUES (1, -1, 'NO DOMAIN');
+INSERT INTO `usermanager`.`tenant` (`is_active`,`id`, `name`) VALUES (1, 1, 'DEMO TENANT');
+INSERT INTO `usermanager`.`tenant` (`is_active`,`id`, `name`) VALUES (1, 2, 'OAUTH2_TENANT');
+
+
+INSERT INTO `usermanager`.`role` (`is_active`, `is_tenant`, `id`, `name`) VALUES (1, 0, 1, 'MASTER_ADMIN');
+INSERT INTO `usermanager`.`role` (`is_active`, `is_tenant`, `id`, `name`) VALUES (1, 1, 2, 'DOMAIN_ADMIN');
+INSERT INTO `usermanager`.`role` (`is_active`, `is_tenant`, `id`, `name`) VALUES (1, 1, 3, 'DOMAIN_USER');
+INSERT INTO `usermanager`.`role` (`is_active`, `is_tenant`, `id`, `name`) VALUES (1, 0, 4, 'SUPPORT');
+
+
+
+INSERT INTO `usermanager`.`privilege` (`name`) VALUES
+('USER_READ'),
+('USER_UPDATE'),
+('USER_CREATE'),
+('USER_DELETE'),
+
+('TENANT_READ'),
+('TENANT_UPDATE'),
+('TENANT_CREATE'),
+('TENANT_DELETE'),
+
+('ROLE_READ'),
+('ROLE_UPDATE'),
+('ROLE_CREATE'),
+('ROLE_DELETE');
+
+
+INSERT INTO usermanager.role_privilege (privilege_id, role_id)
+SELECT p.id, r.id
+FROM usermanager.privilege p
+JOIN usermanager.role r ON r.name = 'MASTER_ADMIN';
+
+
+INSERT INTO usermanager.role_privilege (privilege_id, role_id)
+SELECT p.id, r.id
+FROM usermanager.privilege p
+JOIN usermanager.role r ON r.name = 'DOMAIN_ADMIN'
+WHERE p.name IN (
+    'USER_READ',
+    'USER_UPDATE',
+    'USER_CREATE',
+    'USER_DELETE',
+    'TENANT_READ',
+    'TENANT_UPDATE',
+    'TENANT_CREATE',
+    'TENANT_DELETE',
+    'ROLE_READ',
+    'ROLE_UPDATE'
+);
+
+
+INSERT INTO usermanager.role_privilege (privilege_id, role_id)
+SELECT p.id, r.id
+FROM usermanager.privilege p
+JOIN usermanager.role r ON r.name = 'DOMAIN_USER'
+WHERE p.name IN (
+    'USER_READ',
+    'TENANT_READ',
+    'ROLE_READ'
+);
